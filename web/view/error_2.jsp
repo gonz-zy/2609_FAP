@@ -35,10 +35,10 @@
                 margin-bottom: 10px;
             }
             
-            .btn {
+              .btn {
                 display: inline-block;
                 padding: 10px 20px;
-                background-color: #5bc0de;
+                background-color: #ff8a4b;
                 color: white;
                 text-decoration: none;
                 border-radius: 5px;
@@ -47,7 +47,7 @@
             }
             
             .btn:hover {
-                background-color: #31b0d5;
+                background-color: #ff6e21;
             }
         </style>
     </head>
