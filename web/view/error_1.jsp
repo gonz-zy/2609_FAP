@@ -24,10 +24,10 @@
                 min-height: 100vh;
             }
             
-            #iamge1 {
+            #image1 {
                 max-width: 100%;
-                height: auto;
-                margin-bottom:  0px;
+                height: 40%;
+                margin-bottom: 0px;
             }
             
             .error {
@@ -38,7 +38,7 @@
             .btn {
                 display: inline-block;
                 padding: 10px 20px;
-                background-color: #5bc0de;
+                background-color: #ff8a4b;
                 color: white;
                 text-decoration: none;
                 border-radius: 5px;
@@ -47,12 +47,12 @@
             }
             
             .btn:hover {
-                background-color: #31b0d5;
+                background-color: #ff6e21;
             }
         </style>
     </head>
     <body>
-        <img src=https://media.discordapp.net/attachments/734345741090160701/1372481348689989662/error2.png?ex=6826ee5c&is=68259cdc&hm=b3afc2160c77cf254b3c380bd24492ee5c492bd85c442e7366f0b92b90124891&=&format=webp&quality=lossless&width=473&height=521 id=image1 />
+       <img src="../images/123.png" id="image1" />
         <h2 class="error">Error: Username not found OR password is blank/incorrect.</h2>
         <p>Please try again.</p>
         <a href="index.jsp" class="btn">Back to Login</a>

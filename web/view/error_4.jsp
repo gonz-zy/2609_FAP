@@ -24,8 +24,9 @@
                 min-height: 100vh;
             }
             
-            #iamge1 {
-                max-width: 100%;
+            #image1 {
+                max-width:100%;
+                width:20%;
                 height: auto;
                 margin-bottom:  0px;
             }
@@ -38,7 +39,7 @@
             .btn {
                 display: inline-block;
                 padding: 10px 20px;
-                background-color: #5bc0de;
+                background-color: #ff8a4b;
                 color: white;
                 text-decoration: none;
                 border-radius: 5px;
@@ -47,13 +48,13 @@
             }
             
             .btn:hover {
-                background-color: #31b0d5;
+                background-color: #ff6e21;
             }
         </style>
     </head>
     <body>
-        <img src=https://media.discordapp.net/attachments/734345741090160701/1372477827965779988/cropped_404.png?ex=6826eb15&is=68259995&hm=16bea891f9ccdfcc0c52bf3ffc5a483c5bc9b05187a1645ab85f6e9e3d758883&=&format=webp&quality=lossless&width=348&height=428x id=image1/>
-        <h2 class="error">Error 404: Page Not Found.</h2>
+        <img src="../images/404.png" id="image1" />
+         <h2 class="error">Error 404: Page Not Found.</h2>
         <p>The page you're looking for does not exist.</p>
         <a href="<%= request.getContextPath() %>/view/index.jsp" class="btn">Back to Login</a>
     </body>
