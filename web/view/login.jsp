@@ -15,7 +15,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
@@ -173,6 +173,9 @@
           .login-button:disabled {
             background-color: grey;
             cursor: not-allowed;
+        }
+        .login-title{
+            text-align: center;
         }
     </style>
 </head>

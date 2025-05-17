@@ -13,7 +13,7 @@
                <style>
             body {
                 background-color: #fff4ee;
-                font-family: Arial, sans-serif;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 text-align: center;
                 margin: 0;
                 padding: 20px;
