@@ -181,14 +181,14 @@
         <!-- Left Section with Image and Welcome Message -->
         <div class="left-section">
            
-            <img src="images/clipart1.png" alt="Welcome Image">
+           <img src="${pageContext.request.contextPath}/images/clipart1.png" alt="Welcome Image">
              <div class="welcome-text">Dive in.Explore. Learn Actively</div>
         </div>
         
         <!-- Right Section with Login Form -->
         <div class="right-section">
             <!-- Greeting image -->
-            <img src="images/activelearning.jpg" alt="Greeting Icon" class="greeting-image">
+           <img src="${pageContext.request.contextPath}/images/activelearning.jpg" alt="Greeting Icon" class="greeting-image">
             
             <h2 class="login-title">Login your account</h2>
             
