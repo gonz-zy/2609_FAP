@@ -52,7 +52,7 @@
         </style>
     </head>
     <body>
-        <img src="../images/123.png" id="image1" />
+        <img src="../images/1234.png" id="image1" />
          <h2 class="error">Error: Incorrect password for this username.</h2>
         <p>Please enter the correct password.</p>
         <a href="index.jsp" class="btn">Back to Login</a>

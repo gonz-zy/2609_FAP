@@ -52,7 +52,7 @@
         </style>
     </head>
     <body>
-       <img src="../images/123.png" id="image1" />
+       <img src="../images/1234.png" id="image1" />
         <h2 class="error">Error: Username not found OR password is blank/incorrect.</h2>
         <p>Please try again.</p>
         <a href="index.jsp" class="btn">Back to Login</a>
