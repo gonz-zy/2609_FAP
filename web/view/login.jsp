@@ -229,7 +229,7 @@
                 <!-- Greeting image -->
                 <img src="${pageContext.request.contextPath}/images/Active Learning Logo.svg" alt="Greeting Icon" class="greeting-image">
 
-                <form action="loginProcess.jsp" method="post">
+                <form action="/2609_FAP/LoginServlet" method="post">
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" id="username" name="username" placeholder="Enter your username">
