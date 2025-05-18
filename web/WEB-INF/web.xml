@@ -82,11 +82,15 @@
     </servlet>
     <servlet>
         <servlet-name>JoinCourseServlet</servlet-name>
-        <servlet-class>controller.JoinCourseServlet</servlet-class>
+        <servlet-class>controller.AddToCartServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteCourseServlet</servlet-name>
         <servlet-class>controller.DeleteCourseServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveFromCartServlet</servlet-name>
+        <servlet-class>controller.RemoveFromCartServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -144,6 +148,10 @@
         <error-code>500</error-code>
         <location>/view/error_7.jsp</location>
     </error-page>
+    <servlet-mapping>
+        <servlet-name>RemoveFromCartServlet</servlet-name>
+        <url-pattern>/RemoveFromCartServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

@@ -40,22 +40,42 @@
         <section class="hero-container">
             <div class="main-container main">
                 <div class="top-container">
-                        <form class="button-form" action="<%= request.getContextPath() %>/view/home.jsp">
-                            <button class="buttons" type="submit">Manage Courses</button>
-                        </form>
-                        <form class="button-form" action="<%= request.getContextPath() %>/view/reports.jsp">
-                            <button class="buttons" type="submit">Print Reports</button>
-                        </form>
-                        <form class="button-form" action="<%= request.getContextPath() %>/view/editAccount.jsp">
-                            <button class="buttons" type="submit">Edit Account</button>
-                        </form>
+                        <% if ("A".equals(role)) { %>
+                            <!-- Admin buttons -->
+                            <form class="button-form" action="<%= request.getContextPath() %>/view/home.jsp">
+                                <button class="buttons" type="submit">Manage Courses</button>
+                            </form>
+                            <form class="button-form" action="<%= request.getContextPath() %>/view/reports.jsp">
+                                <button class="buttons" type="submit">Print Reports</button>
+                            </form>
+                            <form class="button-form" action="<%= request.getContextPath() %>/view/editAccount.jsp">
+                                <button class="buttons" type="submit">Edit Account</button>
+                            </form>
+                        <% } else { %>
+                            <!-- Non-admin buttons -->
+                            <form class="button-form" action="<%= request.getContextPath() %>/view/home.jsp">
+                                <button class="buttons" type="submit">Available Courses</button>
+                            </form>
+                            <form class="button-form" action="<%= request.getContextPath() %>/view/myCourses.jsp">
+                                <button class="buttons" type="submit">My Courses</button>
+                            </form>
+                            <form class="button-form" action="<%= request.getContextPath() %>/view/reports.jsp">
+                                <button class="buttons" type="submit">Print Reports</button>
+                            </form>
+                            <form class="button-form" action="<%= request.getContextPath() %>/view/cartStudent.jsp">
+                                <button class="buttons" type="submit">My Cart</button>
+                            </form>
+                            <form class="button-form" action="<%= request.getContextPath() %>/view/editAccount.jsp">
+                                <button class="buttons" type="submit">Edit Account</button>
+                            </form>
+                        <% } %>
                     
                 </div>
                 <div class="bottom-container">
                     <div class="course-container">
                         <div class="course-grid">
                         <%
-                            String dbURL = "jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL";
+                            String dbURL = "jdbc:mysql://localhost:3306/mpfour?zeroDateTimeBehavior=CONVERT_TO_NULL";
                             String dbUser = "root";
                             String dbPass = "passwordsql";
                             Connection conn = null;
@@ -65,18 +85,24 @@
                             try {
                                 Class.forName("com.mysql.cj.jdbc.Driver");
                                 conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
-                                String sql = "SELECT course_id, courseName, username, hours, price, description FROM COURSE";
-                                stmt = conn.prepareStatement(sql);
-                                rs = stmt.executeQuery();
+                                String sql = "SELECT c.course_id, c.courseName, c.username, c.hours, c.price, c.description, " +
+                                            "u.firstName AS instructorFirstName, u.lastName AS instructorLastName " +
+                                            "FROM COURSE c " +
+                                            "JOIN USERS u ON c.username = u.username";
 
-                                while (rs.next()) {
-                                    String course_id = rs.getString("course_id");
-                                    String courseName = rs.getString("courseName");
-                                    String username = rs.getString("username");
-                                    int hours = rs.getInt("hours");
-                                    double price = rs.getDouble("price");
-                                    String description = rs.getString("description");
-                        %>
+                               stmt = conn.prepareStatement(sql);
+                               rs = stmt.executeQuery();
+
+                               while (rs.next()) {
+                                   String course_id = rs.getString("course_id");
+                                   String courseName = rs.getString("courseName");
+                                   String instructorFirstName = rs.getString("instructorFirstName");
+                                   String instructorLastName = rs.getString("instructorLastName");
+                                   int hours = rs.getInt("hours");
+                                   double price = rs.getDouble("price");
+                                   String description = rs.getString("description");
+
+                                 %>
                                     <div class="course-card">
                                         <div class="course-info">
                                             <h2><%= courseName %></h2>
@@ -86,7 +112,7 @@
                                                     <h3><b>Course ID:</b> <%= course_id %></h3>
                                                 </div>
                                                 <div class="right-cont">
-                                                    <h3><b>Instructor:</b> <%= firstName %> <%= lastName %></h3>
+                                                    <h3><b>Instructor:</b> <%= instructorFirstName %> <%= instructorLastName %></h3>
                                                 </div>
                                             </div>
                                             <div class="cont" style="margin-top: 0.5rem;">
@@ -113,7 +139,7 @@
                                                     <button style="background-color: red" type="submit" onclick="return confirm('Are you sure you want to delete this course?');">Delete Course</button>
                                                 </form>
                                             <% } else { %>
-                                                <form class="button-form" action="/2609_FAP/JoinCourseServlet" method="post">
+                                                <form class="button-form" action="/2609_FAP/AddToCartServlet" method="post">
                                                     <input type="hidden" name="course_id" value="<%= course_id %>" />
                                                     <button style="background-color: rgb(100,220,20)" type="submit">Buy Now</button>
                                                 </form>

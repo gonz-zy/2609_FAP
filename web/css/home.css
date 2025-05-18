@@ -78,7 +78,7 @@
 
     .bottom-container{
         width:100%;
-        overflow: auto;
+        
         flex: 1;
     }
     
@@ -183,9 +183,12 @@
         text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         max-height: 600px;
+        
 
     }
-
+    .course-container{
+        overflow: auto;
+    }
     .course-info{
         display: flex;
         flex-direction: column;
