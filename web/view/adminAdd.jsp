@@ -37,7 +37,7 @@
             }
 
             .container {
-                width: 100%;
+                width: 90%;
                 max-width: 900px;
                 background-color: white;
                 padding: 20px;
@@ -110,46 +110,86 @@
                 width: 105%;
                 height: 80%;
             }
+            
+            .main-container {
+                max-width: 1536px;
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+                width:100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            
+             /* 2xl */
+            @media (max-width: 1536px) {
+              .main-container {
+                  max-width: 1280px;
+              }
+            }
+
+            /* xl */
+            @media (max-width: 1280px) {
+              .main-container  {
+                max-width: 1024px;
+              }
+            }
+
+            @media (max-width: 1024px) {
+              .main-container {
+                max-width: 820px;
+              }
+              .header{
+                  margin-left:125px;
+              }
+            }
+            
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>Add New Course</h1>
+             <h1>Add New Course</h1>
         </div>
-        <div class="container">
-            <div class="form-section">
-                <form method="post" action="/FAP/AddCourseServlet">
-                    <div class="form-group">
-                        <label for="courseId">Course ID:</label>
-                        <input type="text" id="courseId" name="courseId" required>
-                    </div>
+        <section class="main-container">
+           
+            <div class="container">
+                
+                <div class="form-section">
+                    <form method="post" action="/FAP/AddCourseServlet">
+                        <div class="form-group">
+                            <label for="courseId">Course ID:</label>
+                            <input type="text" id="courseId" name="courseId" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="username">Admin Username:</label>
-                        <input type="text" id="username" name="username" value="usernamex" readonly>
-                    </div>
+                        <div class="form-group">
+                            <label for="username">Admin Username:</label>
+                            <input type="text" id="username" name="username" value="usernamex" readonly>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="description">Course Description:</label>
-                        <textarea id="description" name="description" required></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label for="description">Course Description:</label>
+                            <textarea id="description" name="description" required></textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="hours">Hours:</label>
-                        <input type="number" id="hours" name="hours" min="1" value="1" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="hours">Hours:</label>
+                            <input type="number" id="hours" name="hours" min="1" value="1" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="price">Price:</label>
-                        <input type="number" id="price" name="price" min="1" max="99999999.99" step="0.01" value="1" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="price">Price:</label>
+                            <input type="number" id="price" name="price" min="1" max="99999999.99" step="0.01" value="1" required>
+                        </div>
 
-                    <button type="submit">Add Course</button>
-                </form>
+                        <button type="submit">Add Course</button>
+                    </form>
+                </div>
+                <div class="image-section">
+                    <img src="../images/clipart22.png" id="image1"/>
+                </div>
             </div>
-            <div class="image-section">
-                <img src="../images/clipart22.png" id="image1"/>
-            </div>
-        </div>
+        </section>
     </body>
 </html>

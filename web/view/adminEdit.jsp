@@ -37,7 +37,7 @@
             }
 
             .container {
-                width: 100%;
+                width: 90%;
                 max-width: 800px;
                 background-color: white;
                 padding: 20px;
@@ -106,12 +106,48 @@
                 width:100%;
                 height:auto;
             }
+            
+            .main-container {
+                max-width: 1536px;
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+                width:100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            
+             /* 2xl */
+            @media (max-width: 1536px) {
+              .main-container {
+                  max-width: 1280px;
+              }
+            }
+
+            /* xl */
+            @media (max-width: 1280px) {
+              .main-container  {
+                max-width: 1024px;
+              }
+            }
+
+            @media (max-width: 1024px) {
+              .main-container {
+                max-width: 820px;
+              }
+              .header{
+                  margin-left:25px;
+              }
+            }
         </style>
     </head>
     <body>
         <div class="header">
             <h1>Edit Course Details</h1>
         </div>
+        <section class="main-container">
         <div class="container">
             <div class="form-section">
                 <form method="post" action="/FAP/EditCourseServlet">
@@ -146,5 +182,6 @@ The official course site for <%= request.getAttribute("courseId") %>.
                 <img src="../images/edit.jpg" id="image1"/>
             </div>
         </div>
+        </section>
     </body>
 </html>

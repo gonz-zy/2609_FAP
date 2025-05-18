@@ -24,18 +24,15 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
         }
         
         .main-container {
             display: flex;
-            width: 100%;
-            max-width: 1200px;
-            min-height: 700px; /* Increased container height */
+            width: 90%;
+            height: 90vh;
             background-color: white;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         }
         
         .left-section {
@@ -45,46 +42,48 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 60px; /* Increased padding */
+            padding: 20px; /* Increased padding */
             text-align: center;
         }
         
         .welcome-text {
             color: #333;
             font-size: 28px; /* Slightly larger font */
-            margin-bottom: 40px; /* More spacing */
             font-weight: 600;
         }
         
         .left-section img {
-            max-width: 100%;
+            max-width: 90%;
             height: auto;
-            max-height: 400px; /* Larger image */
+            max-height: 90%; /* Larger image */
             border-radius: 8px;
             object-fit: cover;
         }
         
         .right-section {
-            flex: 1;
-            padding: 60px; /* Increased padding */
+            flex: 1 1 0; /* allow shrinking */
+            padding: 4vh; /* responsive padding */
             display: flex;
             flex-direction: column;
             justify-content: center;
+            height: 100%;
+            min-height: 0;
+            overflow: hidden;
         }
         
         .greeting-image {
-            width: 150px; /* Larger greeting icon */
-            height: 120px;
-            margin-bottom: 30px;
+            width: 100%; /* Larger greeting icon */
+            height: auto;
+            max-width:250px;
             border-radius: 50%;
             object-fit: cover;
             align-self: center;
+            
         }
         
         .login-title {
             color: #333;
             font-size: 24px; /* Slightly larger */
-            margin-bottom: 40px; /* More spacing */
             font-weight: 600;
         }
         
@@ -130,7 +129,7 @@
             text-decoration: underline;
             color: #4CAF50;
         }
-        
+                
         .captcha-container {
             display: flex;
             justify-content: center;
@@ -174,50 +173,88 @@
             background-color: grey;
             cursor: not-allowed;
         }
-        .login-title{
-            text-align: center;
+        
+        .container {
+          max-width: 1536px;
+          margin-left: auto;
+          margin-right: auto;
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+          width:100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
+
+        /* 2xl */
+        @media (max-width: 1536px) {
+          .container {
+              max-width: 1280px;
+          }
+          
+        }
+
+        /* xl */
+        @media (max-width: 1280px) {
+          .container {
+            max-width: 1024px;
+          }
+          .break-after {
+            display: block;
+          }
+        }
+        
+        @media (max-width: 1024px) {
+          .container {
+            max-width: 820px;
+          }
+          .main-container{
+               max-width: 820px;
+          }
+        }
+        
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- Left Section with Image and Welcome Message -->
-        <div class="left-section">
-           
-           <img src="${pageContext.request.contextPath}/images/clipart1.png" alt="Welcome Image">
-             <div class="welcome-text">Dive in.Explore. Learn Actively</div>
-        </div>
-        
-        <!-- Right Section with Login Form -->
-        <div class="right-section">
-            <!-- Greeting image -->
-           <img src="${pageContext.request.contextPath}/images/activelearning.jpg" alt="Greeting Icon" class="greeting-image">
-            
-            <h2 class="login-title">Login your account</h2>
-            
-            <form action="loginProcess.jsp" method="post">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username">
+    <section class="container">
+        <div class="main-container">
+            <!-- Left Section with Image and Welcome Message -->
+            <div class="left-section">
+               <img class ="img" src="${pageContext.request.contextPath}/images/clipart1.png" alt="Welcome Image">
+               <div class="welcome-text">Dive in. Explore.<span class="break-after"> Learn Actively</div>
+            </div>
+
+            <!-- Right Section with Login Form -->
+            <div class="right-section">
+                <!-- Greeting image -->
+                <img src="${pageContext.request.contextPath}/images/Active Learning Logo.svg" alt="Greeting Icon" class="greeting-image">
+
+                <form action="loginProcess.jsp" method="post">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password">
+                    </div>
+
+
+                    <div class="captcha-container">
+                        <div class="recaptcha-wrapper">
+                                <div class="g-recaptcha" data-sitekey="6LcF3fsqAAAAAD8SdWJzzJlpIOitZI8OV9wD5r8_" data-callback="enableSubmitBtn"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-button" id="submitBtn" disabled>Login</button>
+                </form>
+
+                <div class="create-account">
+                    Don't have an account? <a href="#">Create Account</a>
                 </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password">
-                </div>
-                
-                
-                <div class="captcha-container">
-                    <div class="g-recaptcha" data-sitekey="6LcF3fsqAAAAAD8SdWJzzJlpIOitZI8OV9wD5r8_" data-callback="enableSubmitBtn"></div>
-                </div>
-                
-                <button type="submit" class="login-button" id="submitBtn" disabled>Login</button>
-            </form>
-            
-            <div class="create-account">
-                Don't have an account? <a href="#">Create Account</a>
             </div>
         </div>
-    </div>
+    </section>
 </body>
 </html>
