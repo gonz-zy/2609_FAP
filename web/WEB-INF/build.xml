@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FAP" default="deploy" basedir="."> 
+    <target name="clean"> 
+        <delete dir="build"/> 
+        <delete dir="dist"/> 
+    </target> 
+    <target name="compile"> 
+        <mkdir dir="build"/> 
+        <javac srcdir="src" destdir="build" includeantruntime="false"/> 
+    </target> 
+    <target name="war" depends="compile"> 
+        <mkdir dir="dist"/> 
+        <war destfile="dist/CaptchaWebApp.war" webxml="web/WEB-INF/web.xml"> 
+            <fileset dir="web"/> 
+            <fileset dir="build"/> 
+        </war> 
+    </target> 
+    <target name="deploy" depends="war"> 
+        <copy file="dist/CaptchaWebApp.war" todir="C:/glassfish4/glassfish/domains/domain1/autodeploy"/> 
+    </target> 
+</project>
