@@ -77,30 +77,35 @@ public class AddCourseServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
-        String courseId = request.getParameter("courseId");
+        String course_id = request.getParameter("course_id");
+        String courseName = request.getParameter("courseName");
         String username = (String) session.getAttribute("username");
         String description = request.getParameter("description");
         int hours = Integer.parseInt(request.getParameter("hours"));
         double price = Double.parseDouble(request.getParameter("price"));
         LocalDate createdAt = LocalDate.now();
+        
+        String mysqlURL = "jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL";
+        String mysqlUser = "root";
+        String mysqlPass = "passwordsql";
 
-        try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/mpfour", "app", "app")) {
-            String sql = "INSERT INTO COURSE (course_id, username, description, hours, price, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL", "root", "passwordsql")) {
+            String sql = "INSERT INTO COURSE (course_id, courseName, username, description, hours, price) VALUES (?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, courseId);
-                ps.setString(2, username);
-                ps.setString(3, description);
-                ps.setInt(4, hours);
-                ps.setDouble(5, price);
-                ps.setDate(6, Date.valueOf(createdAt));
+                ps.setString(1, course_id);
+                ps.setString(2, courseName);
+                ps.setString(3, username);
+                ps.setString(4, description);
+                ps.setInt(5, hours);
+                ps.setDouble(6, price);
 
                 int rowsInserted = ps.executeUpdate();
                 if (rowsInserted > 0) {
                     request.setAttribute("successMessage", "Added Course Successfully");
-                    request.setAttribute("jspPath", "/FAP/view/courseList.jsp");
-                    request.setAttribute("pageName", "Course List");
-                    request.getRequestDispatcher("/FAP/view/success.jsp").forward(request, response);
+                    request.setAttribute("jspPath", "/2609_FAP/view/home.jsp");
+                    request.setAttribute("pageName", "Home Page");
+                    request.getRequestDispatcher("view/success.jsp").forward(request, response);
                 } else {
                     response.sendRedirect("view/error_5.jsp");
                 }

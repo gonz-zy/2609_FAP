@@ -72,14 +72,22 @@
         background-color: #fff4ee;
         border-radius: 15px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        height: 100%;
 
     }
 
     .bottom-container{
         width:100%;
         overflow: auto;
+        flex: 1;
     }
-
+    
+    .add-button {
+        padding: 1rem;
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid #ddd;
+    }
     .top-container{
         width:100%;
         height:auto;

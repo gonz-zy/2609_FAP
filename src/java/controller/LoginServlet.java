@@ -18,6 +18,11 @@ public class LoginServlet extends HttpServlet {
     private String secretKey;
     private String cipherAlgorithm;
     private SecretKeySpec keySpec;
+    
+    private String mysqlURL = "jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL";
+    private String mysqlUser = "root";
+    private String mysqlPass = "passwordsql";
+
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -40,12 +45,17 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        if (isEmpty(username) || isEmpty(password)) {
-            res.sendRedirect("view/error_1.jsp");
+        if (isEmpty(username) && isEmpty(password)) {
+            res.sendRedirect("view/noLoginCredentials.jsp");
             return;
         }
 
-        try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
+        try {
+            String driver = "org.apache.derby.jdbc.ClientDriver";
+            Class.forName(driver);
+            
+            Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+            
             PreparedStatement stmt = conn.prepareStatement(
                     "SELECT password, role FROM USERS WHERE username=?"
             );
@@ -68,7 +78,7 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             res.sendRedirect("view/error_4.jsp");
-        }
+        } catch (Exception en) {}
     }
 
     private boolean matchPassword(String plainPassword, String encrypted) {
@@ -94,14 +104,43 @@ public class LoginServlet extends HttpServlet {
     private void handleLoginResult(HttpServletRequest req, HttpServletResponse res,
                                    String username, String role,
                                    boolean userExists, boolean passwordMatch,
-                                    String password) throws IOException {
+                                   String password) throws IOException {
 
         if (userExists && passwordMatch) {
+            
+             String firstName = "";
+                String lastName = "";
+
+                // Connect to MySQL to retrieve first and last name
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection mysqlConn = DriverManager.getConnection(mysqlURL, mysqlUser, mysqlPass);
+
+                    PreparedStatement mysqlStmt = mysqlConn.prepareStatement(
+                        "SELECT firstname, lastname FROM USERS WHERE username = ?"
+                    );
+                    mysqlStmt.setString(1, username);
+                    ResultSet mysqlRs = mysqlStmt.executeQuery();
+
+                    if (mysqlRs.next()) {
+                        firstName = mysqlRs.getString("firstname");
+                        lastName = mysqlRs.getString("lastname");
+                    }
+
+                    mysqlRs.close();
+                    mysqlStmt.close();
+                    mysqlConn.close();
+                } catch (Exception e) {
+                    e.printStackTrace(); // optional: handle this more gracefully
+                }
+            
             HttpSession session = req.getSession();
             session.setAttribute("username", username);
             session.setAttribute("role", role);
+            session.setAttribute("firstName", firstName);
+            session.setAttribute("lastName", lastName);
             session.setMaxInactiveInterval(5 * 60);
-            res.sendRedirect("view/courseList.jsp");
+            res.sendRedirect("view/home.jsp");
 
         } else if (userExists) {
             res.sendRedirect("view/error_2.jsp"); // wrong password

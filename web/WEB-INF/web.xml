@@ -134,7 +134,7 @@
     </error-page>
     <error-page>
         <error-code>403</error-code>
-        <location>/view/error_session.jsp</location>
+        <location>/view/error_8.jsp</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
@@ -142,7 +142,7 @@
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/view/error_6.jsp</location>
+        <location>/view/error_7.jsp</location>
     </error-page>
     <session-config>
         <session-timeout>

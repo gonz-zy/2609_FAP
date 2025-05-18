@@ -234,7 +234,7 @@
                 <div class="signup-title">Sign Up</div>
                 <div class="signup-subtitle">Create your account to get started</div>
 
-                <form method="post" action="/FAP/SignUpServlet">
+                <form method="post" action="/2609_FAP/SignUpServlet">
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" id="username" name="username" maxlength="20" required>
@@ -271,7 +271,7 @@
                 </form>
 
                 <div class="create-account">
-                    Already have an account? <a href="login.jsp">Login here</a>
+                    Already have an account? <a href="<%= request.getContextPath() %>/view/login.jsp">Login here</a>
                 </div>
             </div>
         </div>

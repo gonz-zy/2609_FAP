@@ -10,7 +10,6 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -126,11 +125,11 @@ public class ReportServlet extends HttpServlet {
         String filename = "COURSELIST_" + year + month + day + hour + minute + second + ".pdf";
         
         try {
-            String driver = "org.apache.derby.jdbc.ClientDriver";
+            String driver = "com.mysql.cj.jdbc.Driver";
             Class.forName(driver);
-            String url = "jdbc:derby://localhost:1527/mpfour";
-            String dbusername = "app";
-            String dbpassword = "app";
+            String url = "jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL";
+            String dbusername = "root";
+            String dbpassword = "root";
             Connection conn = DriverManager.getConnection(url, dbusername, dbpassword);
             Statement stmt = conn.createStatement();
             ResultSet rs = null;
@@ -176,13 +175,10 @@ public class ReportServlet extends HttpServlet {
                     Paragraph paragraph3 = new Paragraph("\nList of Accounts\n\n", fontNormal);
                     document.add(paragraph3);
                     
-                    PdfPTable table = new PdfPTable(3);
+                    PdfPTable table = new PdfPTable(2);
                     table.setHorizontalAlignment(Element.ALIGN_CENTER);
                     
                     PdfPCell cell = new PdfPCell(new Phrase("User\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
-                    table.addCell(cell);
-                    
-                    cell = new PdfPCell(new Phrase("Password", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
                     table.addCell(cell);
                     
                     cell = new PdfPCell(new Phrase("Role", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
@@ -190,21 +186,19 @@ public class ReportServlet extends HttpServlet {
                     
                     while(rs.next()) {
                         recordUser = rs.getString("USERNAME");
-                        encryptedPassword = rs.getString("PASSWORD");
-                        recordPassword = new String(cipher.doFinal(Base64.decodeBase64(encryptedPassword)));
                         recordRole = rs.getString("ROLE");
                         
                         if(recordRole.equals("A"))
                             recordRole = "Admin";
                         else
                             recordRole = "Student";
+                        
+                        if(recordUser.equals(username))
+                            recordUser = recordUser + " *";
                     
                         cell = new PdfPCell(new Phrase(recordUser, new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL)));
                         table.addCell(cell);
                         
-                        cell = new PdfPCell(new Phrase(recordPassword, new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL)));
-                        table.addCell(cell);
-                    
                         cell = new PdfPCell(new Phrase(recordRole + "\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.ITALIC)));
                         table.addCell(cell);
                     }
@@ -450,13 +444,10 @@ public class ReportServlet extends HttpServlet {
                 query = "SELECT status, enrolled_at FROM ENROLLMENT WHERE course_id='" + courseId + "'";
                 ResultSet rs2 = stmt2.executeQuery(query);
                 
-                PdfPTable table = new PdfPTable(5);
+                PdfPTable table = new PdfPTable(4);
                 table.setHorizontalAlignment(Element.ALIGN_CENTER);
                     
                 PdfPCell cell = new PdfPCell(new Phrase("Username\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
-                table.addCell(cell);
-                    
-                cell = new PdfPCell(new Phrase("Password", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
                 table.addCell(cell);
                     
                 cell = new PdfPCell(new Phrase("Role", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
@@ -471,18 +462,12 @@ public class ReportServlet extends HttpServlet {
                 paragraph = new Paragraph("\nList of Course Enrollees\n\n", fontNormal);
                 document.add(paragraph);
                 while (rs.next() && rs2.next()) {
-                    encryptedPassword = rs.getString("PASSWORD");
-                    
                     recordUser = rs.getString("username");
-                    recordPassword = new String(cipher.doFinal(Base64.decodeBase64(encryptedPassword)));
                     recordRole = rs.getString("role");
                     recordStatus = rs2.getString("status");
                     recordCreate = rs2.getString("enrolled_at");
                     
                     cell = new PdfPCell(new Phrase(recordUser, new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL)));
-                    table.addCell(cell);
-                    
-                    cell = new PdfPCell(new Phrase(recordPassword + "\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.ITALIC)));
                     table.addCell(cell);
                         
                     cell = new PdfPCell(new Phrase(recordRole, new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL)));

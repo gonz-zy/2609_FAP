@@ -3,10 +3,12 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -70,69 +72,47 @@ public class EditCourseServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String courseId = request.getParameter("courseId");
-        String professor = request.getParameter("professor");
-        String description = request.getParameter("description");
+        String courseName = request.getParameter("courseName");
+        String course_id = request.getParameter("course_id");
+        String description = request.getParameter("description");   
         int hours = Integer.parseInt(request.getParameter("hours"));
-        float price = Float.parseFloat(request.getParameter("hours"));
-        String created_at = (request.getServletContext().getAttribute("currentDate")).toString();
-        
+        float price = Float.parseFloat(request.getParameter("price"));
+
         PreparedStatement ps = null;
         ResultSet records = null;
         
         try {
-            String driver = "org.apache.derby.jdbc.ClientDriver";
+            String driver = "com.mysql.cj.jdbc.Driver";
             Class.forName(driver);
-            String url = "jdbc:derby://localhost:1527/mpfour";
-            String dbusername = "app";
-            String dbpassword = "app";
+            String url = "jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL";
+            String dbusername = "root";
+            String dbpassword = "passwordsql";
             conn = DriverManager.getConnection(url, dbusername, dbpassword);
-            String query = "SELECT *, FROM USERS WHERE username=?";
+            String query = "UPDATE COURSE SET courseName=?, description=?, hours=?, price=? WHERE course_id=?";
             ps = conn.prepareStatement(query);
-            ps.setString(1, professor);
-            records = ps.executeQuery();
-            
-            boolean usernameFlag = false;
-            while(records.next()) {
-                if(records.getString("username").equals(professor)) {
-                    usernameFlag = true;
-                    break;
-                }
-            }
-            
-            if(!usernameFlag) {
-                response.sendError(HttpServletResponse.SC_CONFLICT, "Invalid Username");
-                return;
-            }
-            
-            query = "UPDATE COURSE SET username=?, description=?, hours=?, price=?, created_at=? WHERE course_id=?";
-            ps = conn.prepareStatement(query);
-            ps.setString(1, professor);
+            ps.setString(1, courseName);
             ps.setString(2,description);
             ps.setInt(3, hours);
             ps.setFloat(4, price);
-            ps.setString(5, created_at);
-            ps.setString(6,courseId);
+            ps.setString(5,course_id);
             
-            ps.executeUpdate();
-            conn.commit();
+            System.out.println(courseName + description + hours + price + course_id);
             
+            int check = ps.executeUpdate();
+            
+            
+            if (check > 0) {
             request.setAttribute("successMessage", "Updated Course Successfully");
-            request.setAttribute("jspPath", "/FAP/view/courseList.jsp");
-            request.setAttribute("pageName", "Course List");
-            request.getRequestDispatcher("/FAP/view/success.jsp").forward(request, response);
+            request.setAttribute("jspPath", "/2609_FAP/view/home.jsp");
+            request.setAttribute("pageName", "Home Page");
+            request.getRequestDispatcher("view/success.jsp").forward(request, response);
+            } else {
+                    response.sendRedirect("view/error_5.jsp");
+                }
         }
         
         catch (SQLException sqle) {
-            try {
-                // Rollback in case of an error
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-            response.sendError(500);
+
             sqle.printStackTrace();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);

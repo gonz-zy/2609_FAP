@@ -71,8 +71,7 @@
     </head>
     <body>
         <!-- Success Icon placed outside the container -->
-        <img src="../images/sucr.png" alt="Success Icon" class="success-icon">
-            <a href="" class="button">Back to </a>
+        <img src="<%= request.getContextPath() %>/images/sucr.png" alt="Success Icon" class="success-icon">
             <div class="success-message"><h1><%=(request.getAttribute("successMessage")).toString() %></h1></div>
             <a href="<%=(request.getAttribute("jspPath")).toString() %>" class="back-button">Back to <%=(request.getAttribute("pageName")).toString() %></a>
         

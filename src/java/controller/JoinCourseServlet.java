@@ -81,11 +81,11 @@ public class JoinCourseServlet extends HttpServlet {
         String courseId = request.getParameter("course");
         
         try {
-            String driver = "org.apache.derby.jdbc.ClientDriver";
+            String driver = "com.mysql.cj.jdbc.Driver";
             Class.forName(driver);
-            String url = "jdbc:derby://localhost:1527/mpfour";
-            String dbusername = "app";
-            String dbpassword = "app";
+            String url = "jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL";
+            String dbusername = "root";
+            String dbpassword = "root";
             conn = DriverManager.getConnection(url, dbusername, dbpassword);
             String query = "SELECT course_id FROM COURSE WHERE course_id=?";
             ps = conn.prepareStatement(query);

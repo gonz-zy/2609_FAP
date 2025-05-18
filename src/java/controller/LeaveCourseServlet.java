@@ -69,25 +69,27 @@ public class LeaveCourseServlet extends HttpServlet {
         String username = request.getParameter("username");
         
         try {
-            String driver = "org.apache.derby.jdbc.ClientDriver";
+            String driver = "com.mysql.cj.jdbc.Driver";
             Class.forName(driver);
-            String url = "jdbc:derby://localhost:1527/mpfour";
-            String dbusername = "app";
-            String dbpassword = "app";
+            String url = "jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL";
+            String dbusername = "root";
+            String dbpassword = "root";
             Connection conn = DriverManager.getConnection(url, dbusername, dbpassword);
             
             String query = "DELETE FROM ENROLLMENT WHERE course_id=? AND username=?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, courseId);
             ps.setString(2, username);
-            ResultSet rs = ps.executeQuery();
+            ps.executeUpdate();
             
             request.setAttribute("successMessage", "Successfully Removed Student from Course");
             request.setAttribute("jspPath","/FAP/view/courseList.jsp");
             request.setAttribute("pageName","Course List Page");
-            request.getRequestDispatcher("/FAP/view/success.jsp").forward(request, response);
+            request.getRequestDispatcher("view/success.jsp").forward(request, response);
         }
-        catch(Exception e) {}
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

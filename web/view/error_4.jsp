@@ -56,6 +56,6 @@
         <img src="../images/404.png" id="image1" />
          <h2 class="error">Error 404: Page Not Found.</h2>
         <p>The page you're looking for does not exist.</p>
-        <a href="<%= request.getContextPath() %>/view/index.jsp" class="btn">Back to Login</a>
+        <a href="<%= request.getContextPath() %>/view/login.jsp" class="btn">Back to Login</a>
     </body>
 </html>

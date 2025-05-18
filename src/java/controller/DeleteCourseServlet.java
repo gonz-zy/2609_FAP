@@ -49,10 +49,10 @@ public class DeleteCourseServlet extends HttpServlet {
             return;
         }
         
-        String courseId = request.getParameter("courseId");
+        String courseId = request.getParameter("course_id");
         String username = (String) session.getAttribute("username");
 
-        try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/mpfour", "app", "app")) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL", "root", "passwordsql")) {
             // First verify the course belongs to the current user (admin)
             String verifySql = "SELECT 1 FROM COURSE WHERE course_id = ? AND username = ?";
             try (PreparedStatement verifyPs = conn.prepareStatement(verifySql)) {
@@ -74,8 +74,8 @@ public class DeleteCourseServlet extends HttpServlet {
                 int rowsDeleted = deletePs.executeUpdate();
                 if (rowsDeleted > 0) {
                     request.setAttribute("successMessage", "Course Deleted Successfully");
-                    request.setAttribute("jspPath", "/FAP/view/courseList.jsp");
-                    request.setAttribute("pageName", "Course List");
+                    request.setAttribute("jspPath", "/2609_FAP/view/home.jsp");
+                    request.setAttribute("pageName", "Home Page");
                     request.getRequestDispatcher("view/success.jsp").forward(request, response);
                 } else {
                     response.sendRedirect("view/error_5.jsp");

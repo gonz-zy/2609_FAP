@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import java.io.IOException;
@@ -9,7 +5,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
@@ -31,9 +26,9 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class SignUpServlet extends HttpServlet {
 
-    private String dbURL = "jdbc:derby://localhost:1527/mpfour";
-    private String dbUser = "app";
-    private String dbPass = "app";
+    private String dbURL = "jdbc:mysql://localhost:3306/mpfour?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL";
+    private String dbUser = "root";
+    private String dbPass = "passwordsql";
 
     private String secretKey;
     private String cipherAlgorithm;
@@ -107,32 +102,18 @@ public class SignUpServlet extends HttpServlet {
         String password = request.getParameter("password");
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
-        String roleInput = request.getParameter("role");
+        String role = request.getParameter("role");
 
-        String role = roleInput.equalsIgnoreCase("admin") ? "A" : "S";
-
-        if (username == null || username.trim().isEmpty() ||
-            password == null || password.trim().isEmpty() ||
-            firstname == null || firstname.trim().isEmpty() ||
-            lastname == null || lastname.trim().isEmpty() ||
-            role == null || role.trim().isEmpty()) {
-            response.sendRedirect("view/error_5.jsp");
+        if (username == null || password == null || firstname == null || lastname == null || role == null) {
+            response.sendRedirect("view/error_6.jsp");
             return;
         }
 
-        try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
-            
-            String checkQuery = "SELECT COUNT(*) FROM USERS WHERE username = ?";
-            try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
-                checkStmt.setString(1, username);
-                ResultSet rs = checkStmt.executeQuery();
-                if (rs.next() && rs.getInt(1) > 0) {
-                    // Username exists
-                    request.setAttribute("errorMessage", "Username already taken.");
-                    request.getRequestDispatcher("view/signup.jsp").forward(request, response);
-                    return;
-                }
-            }
+        try {
+
+            String driver = "com.mysql.cj.jdbc.Driver";
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
             
             PreparedStatement stmt = conn.prepareStatement(
                 "INSERT INTO USERS (username, password, firstname, lastname, role, created_at) VALUES (?, ?, ?, ?, ?, ?)"
@@ -149,18 +130,50 @@ public class SignUpServlet extends HttpServlet {
 
             stmt.executeUpdate();
             stmt.close();
-
+            
+            String driver2 = "org.apache.derby.jdbc.ClientDriver";
+            Class.forName(driver2);
+            Connection conn2 = DriverManager.getConnection("jdbc:derby://localhost:1527/mpfour", "app", "app");
+            
+            PreparedStatement stmt2 = conn2.prepareStatement(
+                "INSERT INTO USERS (username, password, role, created_at) VALUES (?, ?, ?, ?)"
+            );
+            
+            stmt2.setString(1, username);
+            stmt2.setString(2, encryptPassword(password));
+            stmt2.setString(3, role);
+            stmt2.setTimestamp(4, ts);
+            
+            stmt2.executeUpdate();
+            stmt2.close();
+            
+            /*Connection conn2 = DriverManager.getConnection("jdbc:derby://localhost:1527/mpfour", "app", "app");
+            PreparedStatement stmt2 = conn2.prepareStatement(
+                "INSERT INTO USERS (username, password, firstname, lastname, role, created_at) VALUES (?, ?, ?, ?, ?, ?)"
+            );
+            
+            stmt2.setString(1, username);
+            stmt2.setString(2, encryptPassword(password));
+            stmt2.setString(3, firstname);
+            stmt2.setString(4, lastname);
+            stmt2.setString(5, role);
+            stmt2.setTimestamp(6, ts);
+            
+            stmt2.executeUpdate();
+            stmt2.close();*/
+            
             request.setAttribute("successMessage", "Added Successfully");
             request.setAttribute("jspPath", "view/login.jsp");
             request.setAttribute("pageName", "Login Page");
-            response.sendRedirect("view/success.jsp");
+            request.getRequestDispatcher("view/success.jsp").forward(request,response);
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            response.sendRedirect("view/error_5.jsp");
+            e.printStackTrace();
+            response.sendRedirect("view/error_6.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("view/error_5.jsp");
-        }
+            response.sendRedirect("view/error_6.jsp");
+        } catch (Exception en) {}
     }
 
     /**
